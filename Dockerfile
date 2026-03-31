@@ -25,6 +25,11 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Ajuster les permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Changer le DocumentRoot d'Apache vers le dossier /public de Laravel
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/apache2.conf
 
+# S'assurer que les permissions sont correctes
+RUN chown -R www-data:www-data /var/www/html
 # Exposer le port par défaut de Render
 EXPOSE 80
